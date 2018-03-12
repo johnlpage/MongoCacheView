@@ -25,7 +25,7 @@ reportTime = 10
 while(true){
 		print('\033[2J')
 
-		print( "Collection                 \tSize\tCached\t%tage\tDelta\tRead\tWritten\tUsed")
+		print( "Collection                                                           \tSize\tCached\t%tage\tDelta\tRead\tWritten\tUsed")
 	for(c=0;c<collectionInfos.length;c++) {
 	
 		collInfo = collectionInfos[c]
@@ -35,6 +35,8 @@ while(true){
 		mb = 1024*1024
 		collStats = db[collInfo.coll].stats(mb)
 		//printjson(collStats)
+		if (collInfo.coll.startsWith('system.'))
+			continue;
 		inCache = Math.floor(collStats["wiredTiger"]["cache"]["bytes currently in the cache"]/mb)
 		cacheRead = Math.floor(collStats["wiredTiger"]["cache"]["bytes read into cache"]/mb)
 		cacheWrite = Math.floor(collStats["wiredTiger"]["cache"]["bytes written from cache"]/mb)
@@ -45,11 +47,11 @@ while(true){
 		readDiff = Math.floor((cacheRead - collInfo.cacheRead)/reportTime)
 		writeDiff = Math.floor((cacheWrite - collInfo.cacheWrite)/reportTime)
 		pageUseDiff = Math.floor((pagesUsed - collInfo.pagesUsed)/reportTime)
-		name =  collInfo.coll
-		name = name + Array(30 - name.length).join(" ")
+		name =  collInfo.db + "." + collInfo.coll
+		name = name + Array(70 - name.length).join(" ")
 		if(collSize > 0) {
 			pc = Math.floor((inCache / collSize) * 100)
-			print( name + "\t" + collSize + "\t" +  inCache + "\t" + pc + "\t" + sizeDiff + "\t" + readDiff + "\t" + writeDiff+"\t"+pageUseDiff)
+			print(  name + "\t" + collSize + "\t" +  inCache + "\t" + pc + "\t" + sizeDiff + "\t" + readDiff + "\t" + writeDiff+"\t"+pageUseDiff)
 		}
 		collectionInfos[c].inCache = inCache
 		collectionInfos[c].cacheRead = cacheRead
