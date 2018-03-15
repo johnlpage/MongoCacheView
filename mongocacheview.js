@@ -35,8 +35,16 @@ while(true){
 		mb = 1024*1024
 		collStats = db[collInfo.coll].stats(mb)
 		//printjson(collStats)
-		if (collInfo.coll.startsWith('system.'))
+
+		if (collInfo.coll.startsWith('system.')) {
 			continue;
+    }
+
+    if(collStats.hasOwnProperty("codeName") && collStats["codeName"] == "CommandNotSupportedOnView"){
+        // stats not supported on view
+        continue;
+    }
+
 		inCache = Math.floor(collStats["wiredTiger"]["cache"]["bytes currently in the cache"]/mb)
 		cacheRead = Math.floor(collStats["wiredTiger"]["cache"]["bytes read into cache"]/mb)
 		cacheWrite = Math.floor(collStats["wiredTiger"]["cache"]["bytes written from cache"]/mb)
@@ -47,8 +55,10 @@ while(true){
 		readDiff = Math.floor((cacheRead - collInfo.cacheRead)/reportTime)
 		writeDiff = Math.floor((cacheWrite - collInfo.cacheWrite)/reportTime)
 		pageUseDiff = Math.floor((pagesUsed - collInfo.pagesUsed)/reportTime)
+
 		name =  collInfo.db + "." + collInfo.coll
 		name = name + Array(70 - name.length).join(" ")
+
 		if(collSize > 0) {
 			pc = Math.floor((inCache / collSize) * 100)
 			print(  name + "\t" + collSize + "\t" +  inCache + "\t" + pc + "\t" + sizeDiff + "\t" + readDiff + "\t" + writeDiff+"\t"+pageUseDiff)
