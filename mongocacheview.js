@@ -57,7 +57,8 @@ while(true){
 		pageUseDiff = Math.floor((pagesUsed - collInfo.pagesUsed)/reportTime)
 
 		name =  collInfo.db + "." + collInfo.coll
-		name = name + Array(70 - name.length).join(" ")
+                lgth = name.length<=70?name.length:70
+                name = name + Array(70 - lgth).join(" ")
 
 		if(collSize > 0) {
 			pc = Math.floor((inCache / collSize) * 100)
