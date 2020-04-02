@@ -13,9 +13,9 @@ for(d=0;d<dbInfos.databases.length;d++) {
 collectionInfos = []
 
 for(d=0;d<dbNames.length;d++){
-    collectionNames = db.getSiblingDB(dbNames[d]).getCollectionNames();
+    collectionNames = db.getSiblingDB(dbNames[d]).getCollectionInfos({"type": "collection"},{"nameOnly": true});
     for(c=0;c<collectionNames.length;c++) {
-        indexesSpec = db.getSiblingDB(dbNames[d]).getCollection(collectionNames[c]).getIndexes();
+        indexesSpec = db.getSiblingDB(dbNames[d]).getCollection(collectionNames[c]['name']).getIndexes();
 
         indexesInfo = []
 
@@ -28,7 +28,7 @@ for(d=0;d<dbNames.length;d++){
             })
         }
         collectionInfos.push({db:dbNames[d],
-            coll:collectionNames[c],
+            coll:collectionNames[c]['name'],
             inCache:0,
             cacheRead:0,
             cacheWrite:0,
@@ -37,7 +37,6 @@ for(d=0;d<dbNames.length;d++){
         })
     }
 }
-
 
 reportTime = 10
 while(true){
