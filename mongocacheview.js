@@ -2,7 +2,7 @@
 
 db = db.getSiblingDB("admin")
 
-var dbInfos = db.adminCommand({listDatabases:1})
+var dbInfos = db.adminCommand({listDatabases:1, nameOnly: true})
 
 dbNames = []
 for(d=0;d<dbInfos.databases.length;d++) {
