@@ -47,7 +47,7 @@ while(true){
         collInfo = collectionInfos[c]
         db = db.getSiblingDB(collInfo.db)
         mb = 1024*1024
-        collStats = db[collInfo.coll].stats({scale: mb, indexDetails: true})
+        collStats = db.getCollection(collInfo.coll).stats({scale: mb, indexDetails: true})
 
         if (collInfo.coll.startsWith('system.')) {
             continue;
