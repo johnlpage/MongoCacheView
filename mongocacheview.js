@@ -100,7 +100,7 @@ while(true){
             writeDiff = Math.floor((indexCacheWrite - indexInfo.cacheWrite)/reportTime)
             pageUseDiff = Math.floor((indexPagesUsed - indexInfo.pagesUsed)/reportTime)
 
-            nameTab =Array(10).join(" ") + nameIndex + Array(60 - nameIndex.length).join(" ")
+            nameTab =Array(10).join(" ") + nameIndex + Array(Math.max(0,60 - nameIndex.length)).join(" ")
 
             if(indexSize > 0) {
                 pc = Math.floor((indexInCache / indexSize) * 100)
