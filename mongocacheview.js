@@ -41,7 +41,7 @@ for(d=0;d<dbNames.length;d++){
 reportTime = 10
 while(true){
         print('\033[2J')
-        print( "Collection                                                           \tSize\tCached\t%tage\tDelta\tRead\tWritten\tUsed")
+        print( "Collection                                                           \tSize\tCached\t%age\tDelta\tRead\tWritten\tUsed")
 
     for(c=0;c<collectionInfos.length;c++) {
         collInfo = collectionInfos[c]
