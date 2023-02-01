@@ -7,6 +7,9 @@ var dbInfos = db.adminCommand({listDatabases:1, nameOnly: true})
 dbNames = []
 for(d=0;d<dbInfos.databases.length;d++) {
     dbName = dbInfos.databases[d];
+    if (dbName.name == "local" || dbName.name == "config" || dbName.name == "admin") {
+        continue;
+    }
     dbNames.push(dbName.name)
 }
 
@@ -14,6 +17,7 @@ collectionInfos = []
 
 for(d=0;d<dbNames.length;d++){
     collectionNames = db.getSiblingDB(dbNames[d]).getCollectionInfos({"type": "collection"},{"nameOnly": true});
+    
     for(c=0;c<collectionNames.length;c++) {
         indexesSpec = db.getSiblingDB(dbNames[d]).getCollection(collectionNames[c]['name']).getIndexes();
 
