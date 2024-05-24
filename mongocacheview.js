@@ -42,7 +42,7 @@ for(d=0;d<dbNames.length;d++){
     }
 }
 
-reportTime = 10
+reportTime = 60
 while(true){
         print('\033[2J')
         print( "Collection                                                           \tSize\tCached\t%age\tDelta\tRead\tWritten\tUsed")
