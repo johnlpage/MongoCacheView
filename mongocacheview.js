@@ -16,7 +16,7 @@ for(d=0;d<dbInfos.databases.length;d++) {
 collectionInfos = []
 
 for(d=0;d<dbNames.length;d++){
-    collectionNames = db.getSiblingDB(dbNames[d]).getCollectionNames();
+    collectionNames = db.getSiblingDB(dbNames[d]).getCollectionInfos().filter(coll => coll.type === "collection").map(coll => coll.name)
     
     for(c=0;c<collectionNames.length;c++) {
         indexesSpec = db.getSiblingDB(dbNames[d]).getCollection(collectionNames[c]).getIndexes();
