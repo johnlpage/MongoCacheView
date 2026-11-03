@@ -74,7 +74,7 @@ while(true){
         pageUseDiff = Math.round((pagesUsed - collInfo.pagesUsed)/reportTime)
 
         name = collInfo.db + "." + collInfo.coll
-        lgth = name.length<=30?name.length:70
+        lgth = name.length<=30?name.length:30
         name = name + Array(30 - lgth).join(" ")
 
         if(collSize > 0) {
