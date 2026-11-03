@@ -43,9 +43,32 @@ for(d=0;d<dbNames.length;d++){
 }
 
 reportTime = 5
+collectionColumnWidth = 40
+
+function padRight(value, width) {
+    value = String(value)
+    return value + Array(Math.max(0, width - value.length) + 1).join(" ")
+}
+
+function padLeft(value, width) {
+    value = String(value)
+    return Array(Math.max(0, width - value.length) + 1).join(" ") + value
+}
+
+function formatName(value, width) {
+    value = String(value)
+    if (value.length > width) {
+        value = value.substring(0, width - 3) + "..."
+    }
+    return padRight(value, width)
+}
+
 while(true){
         print('\033[2J')
-        print( "Collection\t\t\tSize\tCached\t%age\tDelta\tRead\tWritten\tUsed")
+        print(formatName("Collection", collectionColumnWidth) + " " +
+            padLeft("Size", 10) + " " + padLeft("Cached", 10) + " " +
+            padLeft("%age", 6) + " " + padLeft("Delta", 8) + " " +
+            padLeft("Read", 8) + " " + padLeft("Written", 9) + " " + "Used")
 
     for(c=0;c<collectionInfos.length;c++) {
         collInfo = collectionInfos[c]
@@ -73,13 +96,14 @@ while(true){
         writeDiff = Math.round((cacheWrite - collInfo.cacheWrite)/reportTime)
         pageUseDiff = Math.round((pagesUsed - collInfo.pagesUsed)/reportTime)
 
-        name = collInfo.db + "." + collInfo.coll
-        lgth = name.length<=30?name.length:30
-        name = name + Array(30 - lgth).join(" ")
+        name = formatName(collInfo.db + "." + collInfo.coll, collectionColumnWidth)
 
         if(collSize > 0) {
             pc = Math.round((inCache / collSize) * 100)
-            print(  name + "\t" + Math.round(collSize) + "\t" +  inCache + "\t" + pc + "\t" + sizeDiff + "\t" + readDiff + "\t" + writeDiff+"\t"+pageUseDiff)
+            print(name + " " + padLeft(Math.round(collSize), 10) + " " +
+                padLeft(inCache, 10) + " " + padLeft(pc, 6) + " " +
+                padLeft(sizeDiff, 8) + " " + padLeft(readDiff, 8) + " " +
+                padLeft(writeDiff, 9) + " " + pageUseDiff)
         }
         collectionInfos[c].inCache = inCache
         collectionInfos[c].cacheRead = cacheRead
@@ -106,11 +130,13 @@ while(true){
             writeDiff = Math.round((indexCacheWrite - indexInfo.cacheWrite)/reportTime)
             pageUseDiff = Math.round((indexPagesUsed - indexInfo.pagesUsed)/reportTime)
 
-            nameTab =Array(10).join(" ") + nameIndex + Array(Math.max(0,60 - nameIndex.length)).join(" ")
-            nameTab = nameTab.substring(0,18);
+            nameTab = formatName("    " + nameIndex, collectionColumnWidth)
             if(indexSize > 0) {
                 pc = Math.round((indexInCache / indexSize) * 100)
-                print( nameTab + "\t\t" + Math.round(indexSize) + "\t" +  indexInCache + "\t" + pc + "\t" + sizeDiff + "\t" + readDiff + "\t" + writeDiff+"\t"+pageUseDiff)
+                print(nameTab + " " + padLeft(Math.round(indexSize), 10) + " " +
+                    padLeft(indexInCache, 10) + " " + padLeft(pc, 6) + " " +
+                    padLeft(sizeDiff, 8) + " " + padLeft(readDiff, 8) + " " +
+                    padLeft(writeDiff, 9) + " " + pageUseDiff)
             }
 
             collectionInfos[c].indexesInfo[i].inCache = indexInCache
